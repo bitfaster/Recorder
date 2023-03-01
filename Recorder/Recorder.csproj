@@ -4,11 +4,35 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<Authors>Alex Peck</Authors>
+	<Description>High performance, thread-safe in-memory caching primitives for .NET.</Description>
+	<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	<PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<IncludeSource>True</IncludeSource>
+	<IncludeSymbols>True</IncludeSymbols>
+	<EmbedUntrackedSources>true</EmbedUntrackedSources>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	<Version>0.9.0</Version>
+	<RepositoryUrl>https://github.com/bitfaster/Recorder</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+	<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\Readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>
