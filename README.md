@@ -124,10 +124,7 @@ public class ProfileDataController : ControllerBase
 
             foreach (var request in BlackBox.History)
             {
-                //if (request.Name != "root")
-                {
-                    speedscopeWriter.WriteEvent(request);
-                }
+                speedscopeWriter.WriteEvent(request);
             }
 
             speedscopeWriter.Flush();
