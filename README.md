@@ -1,5 +1,8 @@
 # Recorder
-Record high level profiling data in ASP.NET Core applications at runtime. Profiles can then be visualized using speedscope.
+Record high level profiling data in ASP.NET Core applications at runtime. Profiles can then be visualized using [speedscope](https://github.com/jlfwong/speedscope).
+
+![image](https://user-images.githubusercontent.com/12851828/222244380-f5b1138f-ba71-4c77-831b-59cc556ff539.png)
+
 
 # Usage
 
