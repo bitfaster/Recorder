@@ -73,7 +73,7 @@ builder.Services
 
 ### Profiling controllers
 
-Add controllers to integrate into speedscope. The first controller is a simple redirector to make it easier to remember the URI. The second one serves up the .json file containing the profile data.
+Add controllers to integrate with speedscope easily at runtime by sending HTTP GET to https://localhost/profile. The first controller is a simple redirector to make it easier to remember the URI. The second one serves up the .json file containing the profile data.
 
 ```cs
 builder.Services.AddCors(options =>
