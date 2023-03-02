@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Recorder.Middleware
 {
+    // https://github.com/dotnet/aspnetcore/blob/main/src/Middleware/HealthChecks/src/Builder/HealthCheckApplicationBuilderExtensions.cs
+    // https://github.com/dotnet/aspnetcore/blob/main/src/Middleware/HealthChecks/src/Builder/HealthCheckEndpointRouteBuilderExtensions.cs
     public class RecorderMiddleware
     {
         private readonly RequestDelegate _next;
@@ -18,6 +20,8 @@ namespace Recorder.Middleware
 
         public async Task Invoke(HttpContext context, BlackBox blackBox)
         {
+            blackBox.Name = $"{context.Request.Method} {context.Request.Path}";
+
             await _next(context);
 
             blackBox.End();

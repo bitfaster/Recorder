@@ -14,7 +14,16 @@ namespace Recorder
         private readonly StackFrame root;
         private readonly Stack<StackFrame> stack;
 
-        public static IEnumerable<StackFrame> History => history.Get();
+        public static IEnumerable<StackFrame> History 
+        { 
+            get 
+            {
+                // return in order by start time
+                var copy = history.Get().ToList();
+                copy.Sort(new StackFrameStartComparer());
+                return copy;
+            } 
+        }
 
         public static bool HasHistory => history.HasData;
 
