@@ -42,8 +42,7 @@ public class InstrumentedOutputFormatter : IOutputFormatter
     public async Task WriteAsync(OutputFormatterWriteContext context)
     {
         // record time spent in this method via Capture
-        var blackBox  = context.HttpContext.RequestServices.GetService<BlackBox>();
-        using var c = blackBox.Capture("OutputFormatter");
+        using var frame = context.HttpContext.RequestServices.RecordStackFrame("OutputFormatter");
         
         await inner.WriteAsync(context);
     }
@@ -73,7 +72,7 @@ builder.Services
 
 ### Profiling controllers
 
-Add controllers to integrate with speedscope easily at runtime by sending HTTP GET to https://localhost/profile. The first controller is a simple redirector to make it easier to remember the URI. The second one serves up the .json file containing the profile data.
+Add a controller to integrate with speedscope easily at runtime by sending HTTP GET to https://localhost/profile. This controller will first redirect the caller to speedscope with a parameterized profile URL. When speedscope requests the profile data, detect it via the origin header and return the profile.
 
 ```cs
 builder.Services.AddCors(options =>
@@ -99,43 +98,38 @@ app.UseCors(ProfileDataController.CorsPolicyName);
 [Route("[controller]")]
 public class ProfileController : ControllerBase
 {
-    public async Task<IActionResult> Get()
-    {
-        if (!BlackBox.HasHistory)
-        { 
-            return NotFound("No profiles have been recorded");
-        }
-
-        return Redirect($"https://speedscope.app#profileURL=https://{this.HttpContext.Request.Host}/ProfileData");
-    }
-}
-
-[ApiController]
-[Route("[controller]")]
-public class ProfileDataController : ControllerBase
-{
     public const string CorsPolicyName = "allowSpeedscope";
 
     [EnableCors(CorsPolicyName)]
     public async Task<IActionResult> Get()
     {
-        var memoryStream = new MemoryStream();
-
-        using (var speedscopeWriter = new SpeedscopeWriter(memoryStream))
+        if (this.HttpContext.Request.Headers.TryGetValue("Origin", out var origin) && origin[0] == "https://www.speedscope.app")
         {
-            speedscopeWriter.WritePreAmble();
+            var memoryStream = new MemoryStream();
 
-            foreach (var request in BlackBox.History)
+            using (var speedscopeWriter = new SpeedscopeWriter(memoryStream))
             {
-                speedscopeWriter.WriteEvent(request);
+                speedscopeWriter.WritePreAmble();
+
+                foreach (var request in BlackBox.History)
+                {
+                    speedscopeWriter.WriteEvent(request);
+                }
+
+                speedscopeWriter.Flush();
             }
+            memoryStream.Position = 0;
 
-            speedscopeWriter.Flush();
+            var fileResult = File(memoryStream, "application/json", "profile.json");
+            return fileResult;
         }
-        memoryStream.Position = 0;
 
-        var fileResult = File(memoryStream, "application/json", "profile.json");
-        return fileResult;
+        if (!BlackBox.HasHistory)
+        {
+            return NotFound("No profiles have been recorded");
+        }
+
+        return Redirect($"https://speedscope.app#profileURL=https://{this.HttpContext.Request.Host}/Profile");
     }
 }
 ```
