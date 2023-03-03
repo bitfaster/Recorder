@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+  	<!-- Work around generated csproj can't find the signing key. -->
+    <!-- https://github.com/dotnet/BenchmarkDotNet/issues/836 -->
+    <AssemblyOriginatorKeyFile Condition="EXISTS('..\Recorder.snk')">..\Recorder.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+</Project>
