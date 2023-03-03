@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<Authors>Alex Peck</Authors>
-	<Description>High performance, thread-safe in-memory caching primitives for .NET.</Description>
+	<Description>Runtime profiling for Web API.</Description>
 	<PackageId>Recorder</PackageId>
 	<PackageTags>Profile;Profiling;Performance</PackageTags>
 	<PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -16,6 +16,7 @@
 	<EmbedUntrackedSources>true</EmbedUntrackedSources>
 	<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 	<Version>0.9.0</Version>
+	<PublishRepositoryUrl>true</PublishRepositoryUrl>
 	<RepositoryUrl>https://github.com/bitfaster/Recorder</RepositoryUrl>
 	<Copyright>Copyright © Alex Peck $([System.DateTime]::Now.ToString(yyyy))</Copyright>
   </PropertyGroup>
