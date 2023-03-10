@@ -8,6 +8,18 @@ Record high level profiling data in ASP.NET Core applications at runtime. Profil
 
 To use the recorder, register the middleware then request a `BlackBox` recorder at runtime to instrument different subsystems. The blackbox will store a configurable number of request profiles (default is 16).
 
+###
+
+Register types
+
+```cs
+// use default profile naming (root stack frame will have a name like 'GET relative/url?queryparams')
+builder.Services.AddRequestRecording();
+
+// for custom naming, implement INomenclator
+builder.Services.AddRequestRecording<MyNomenclator>();
+```
+
 ### Register middleware
 
 At startup, register the middleware:
@@ -70,7 +82,7 @@ builder.Services
     });
 ```
 
-### Profiling controllers
+### Profiling controller
 
 Add a controller to integrate with speedscope easily at runtime by sending HTTP GET to https://localhost/profile. This controller will first redirect the caller to speedscope with a parameterized profile URL. When speedscope requests the profile data, detect it via the origin header and return the profile.
 
