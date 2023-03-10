@@ -2,7 +2,7 @@
 
 namespace Recorder
 {
-    public static class ServiceCollectionExceptions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddRequestRecording(this IServiceCollection services)
         {
