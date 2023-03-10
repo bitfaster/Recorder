@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Recorder
 {
-    public class SpeedscopeWriter : IDisposable
+    public sealed class SpeedscopeWriter : IDisposable
     {
         private readonly Dictionary<string, int> frameMap;
         private readonly Utf8JsonWriter jsonWriter;
@@ -107,7 +103,7 @@ namespace Recorder
         //"unit":"milliseconds",
         //"startValue":0,
         //"endValue":0.0,
-        private void WriteEventPreamble(Utf8JsonWriter json, StackFrame root, Clock c)
+        private static void WriteEventPreamble(Utf8JsonWriter json, StackFrame root, Clock c)
         {
             json.WritePropertyName("type");
             json.WriteStringValue("evented");
